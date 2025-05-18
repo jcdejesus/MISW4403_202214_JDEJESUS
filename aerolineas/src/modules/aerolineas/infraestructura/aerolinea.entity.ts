@@ -14,5 +14,5 @@ export class AerolineaEntity extends BaseEntity {
   @Column()
   fechaFundacion: Date;
   @Column()
-  sitioWeb: Date;
+  sitioWeb: string;
 }

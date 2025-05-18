@@ -1,4 +1,4 @@
-import { AerolineaEntity } from 'src/modules/aerolineas/infraestructura/aerolinea.entity';
+import { AerolineaEntity } from '../../aerolineas/infraestructura/aerolinea.entity';
 import {
   Column,
   Entity,
@@ -12,7 +12,7 @@ export class BaseEntity {
   id: string;
 }
 
-@Entity('aerolinea')
+@Entity('aeropuerto')
 export class AeropuertoEntity extends BaseEntity {
   @Column()
   nombre: string;
@@ -25,5 +25,5 @@ export class AeropuertoEntity extends BaseEntity {
 
   @ManyToMany(() => AerolineaEntity)
   @JoinTable()
-  categories: AerolineaEntity[];
+  aerolineas: AerolineaEntity[];
 }
