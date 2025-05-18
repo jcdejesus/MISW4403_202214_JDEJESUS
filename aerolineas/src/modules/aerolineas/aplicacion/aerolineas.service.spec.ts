@@ -84,5 +84,24 @@ describe('AerolineasService', () => {
       );
       expect(result).not.toBeNull();
     });
+
+    it('debe encontrar los aeropuertos de una aerolinea', async () => {
+      await service.create(aerolinea);
+      await aeropuertosService.create(aeropuerto);
+      await service.addAirportToAirline(aeropuerto, aerolinea.id);
+      const aeropuertos = await service.findAirportsFromAirline(aerolinea.id);
+      expect(aeropuertos.length).toEqual(1);
+    });
+
+    it('debe encontrar un aeropuerto de una aerolinea', async () => {
+      await service.create(aerolinea);
+      await aeropuertosService.create(aeropuerto);
+      await service.addAirportToAirline(aeropuerto, aerolinea.id);
+      const aeropuertoFromDatabase = await service.findAirportFromAirline(
+        aerolinea.id,
+        aeropuerto.id,
+      );
+      expect(aeropuertoFromDatabase).toEqual(aeropuerto);
+    });
   });
 });

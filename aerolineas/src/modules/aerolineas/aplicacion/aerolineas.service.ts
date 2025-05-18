@@ -6,7 +6,7 @@ import {
   BusinessError,
   BusinessLogicException,
 } from '../../../shared/errors/business-errors';
-import { AeropuertoEntity } from 'src/modules/aeropuertos/infraestructura/aeropuerto.entity';
+import { AeropuertoEntity } from '../../aeropuertos/infraestructura/aeropuerto.entity';
 
 @Injectable()
 export class AerolineasService {
@@ -22,6 +22,9 @@ export class AerolineasService {
   async findOne(aerolineaId: string): Promise<AerolineaEntity | null> {
     return await this.aerolineasRepository.findOne({
       where: [{ id: aerolineaId }],
+      relations: {
+        aeropuertos: true,
+      },
     });
   }
 
@@ -64,6 +67,72 @@ export class AerolineasService {
       aerolinea.aeropuertos = [aeropuerto];
     }
 
-    await this.aerolineasRepository.save(aerolinea);
+    const result = await this.aerolineasRepository.save(aerolinea);
+    return result;
+  }
+
+  async findAirportsFromAirline(
+    aerolineaId: string,
+  ): Promise<AeropuertoEntity[]> {
+    const aerolinea = await this.findOne(aerolineaId);
+    console.log('PPPPPPP', aerolinea);
+    return aerolinea?.aeropuertos ?? [];
+  }
+
+  async findAirportFromAirline(
+    aerolineaId: string,
+    aeropuertoId: string,
+  ): Promise<AeropuertoEntity | null> {
+    const aerolinea = await this.findOne(aerolineaId);
+    return (
+      aerolinea?.aeropuertos?.find(
+        (aeropuerto) => aeropuerto.id === aeropuertoId,
+      ) ?? null
+    );
+  }
+
+  async updateAirportsFromAirline(
+    aeropuerto: AeropuertoEntity,
+    aerolineaId: string,
+  ) {
+    const aerolinea = await this.aerolineasRepository.findOne({
+      where: [{ id: aerolineaId }],
+    });
+
+    if (!aerolinea) {
+      return;
+    }
+
+    if (aerolinea?.aeropuertos.length > 0) {
+      aerolinea.aeropuertos = aerolinea?.aeropuertos.map((item) => {
+        return {
+          ...item,
+          ...aeropuerto,
+        };
+      });
+
+      await this.aerolineasRepository.save(aerolinea);
+    }
+
+    return null;
+  }
+
+  async deleteAirportFromAirline(aeropuertoId: string, aerolineaId: string) {
+    const aerolinea = await this.aerolineasRepository.findOne({
+      where: [{ id: aerolineaId }],
+    });
+
+    if (!aerolinea) {
+      return;
+    }
+
+    if (aerolinea?.aeropuertos.length > 0) {
+      aerolinea.aeropuertos = aerolinea?.aeropuertos.filter(
+        (item) => item.id !== aeropuertoId,
+      );
+      await this.aerolineasRepository.save(aerolinea);
+    }
+
+    return null;
   }
 }
