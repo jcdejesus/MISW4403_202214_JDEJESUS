@@ -3,12 +3,10 @@ import { TypeOrmTestingConfig } from '../../../shared/testing-utils';
 import { AerolineasService } from './aerolineas.service';
 import { faker } from '@faker-js/faker';
 import { AerolineaEntity } from '../infraestructura/aerolinea.entity';
-import { Repository } from 'typeorm';
 
 describe('AerolineasService', () => {
   let service: AerolineasService;
   let aerolinea = new AerolineaEntity();
-  let repository: Repository<AerolineaEntity>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -25,11 +23,11 @@ describe('AerolineasService', () => {
     aerolinea.sitioWeb = 'www.google.com';
   });
 
-  it('should be defined', () => {
+  it('Servicio debe poder compilar', () => {
     expect(service).toBeDefined();
   });
 
-  describe('Buscar aerolineas', () => {
+  describe('Aerolineas', () => {
     it('debe retornar todas las aerolineas existentes', async () => {
       await service.create(aerolinea);
       const aerolineas = await service.findAll();
