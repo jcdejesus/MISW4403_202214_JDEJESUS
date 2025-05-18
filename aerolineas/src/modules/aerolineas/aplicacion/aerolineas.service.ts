@@ -2,6 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { AerolineaEntity } from '../infraestructura/aerolinea.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import {
+  BusinessError,
+  BusinessLogicException,
+} from '../../../shared/errors/business-errors';
 
 @Injectable()
 export class AerolineasService {
@@ -23,11 +27,21 @@ export class AerolineasService {
   async create(
     aerolinea: AerolineaEntity,
   ): Promise<AerolineaEntity | undefined> {
+    const currentDate = new Date();
+    if (currentDate < aerolinea.fechaFundacion) {
+      throw new BusinessLogicException(
+        'Fecha de fundación de la aerolinea debe estar en el pasado',
+        BusinessError.NOT_FOUND,
+      );
+    }
+
     return await this.aerolineasRepository.save(aerolinea);
   }
 
-  async update(): Promise<AerolineaEntity | undefined> {
-    return;
+  async update(
+    aerolinea: AerolineaEntity,
+  ): Promise<AerolineaEntity | undefined> {
+    return this.aerolineasRepository.save(aerolinea);
   }
 
   async delete(): Promise<AerolineaEntity | undefined> {

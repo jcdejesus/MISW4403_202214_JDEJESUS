@@ -35,5 +35,28 @@ describe('AerolineasService', () => {
       const aerolineas = await service.findAll();
       expect(aerolineas.length).toBe(1);
     });
+
+    it('debe poder retornar una aerolinea por su id', async () => {
+      await service.create(aerolinea);
+      const aerolineas = await service.findOne(aerolinea.id);
+      expect(aerolineas).not.toBeNull();
+    });
+
+    it('debe poder crear una aerolinea', async () => {
+      const result = await service.create(aerolinea);
+      expect(result).not.toBeNull();
+    });
+
+    it('debe poder actualizar una aerolinea', async () => {
+      const aerolineaToBeUpdated = {
+        ...aerolinea,
+        nombre: 'Actualizado',
+      };
+      await service.create(aerolinea);
+      const result = await service.update(aerolineaToBeUpdated);
+      expect(result?.nombre).toBe(aerolineaToBeUpdated.nombre);
+    });
+
+    it('debe poder eliminar una aerolinea', () => {});
   });
 });
