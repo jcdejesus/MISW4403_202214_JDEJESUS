@@ -6,6 +6,7 @@ import {
   BusinessError,
   BusinessLogicException,
 } from '../../../shared/errors/business-errors';
+import { AeropuertoEntity } from 'src/modules/aeropuertos/infraestructura/aeropuerto.entity';
 
 @Injectable()
 export class AerolineasService {
@@ -46,5 +47,23 @@ export class AerolineasService {
 
   async delete(aerolineaId: string) {
     await this.aerolineasRepository.delete({ id: aerolineaId });
+  }
+
+  async addAirportToAirline(aeropuerto: AeropuertoEntity, aerolineaId: string) {
+    const aerolinea = await this.aerolineasRepository.findOne({
+      where: [{ id: aerolineaId }],
+    });
+
+    if (!aerolinea) {
+      return;
+    }
+
+    if (aerolinea?.aeropuertos) {
+      aerolinea.aeropuertos.push(aeropuerto);
+    } else {
+      aerolinea.aeropuertos = [aeropuerto];
+    }
+
+    await this.aerolineasRepository.save(aerolinea);
   }
 }

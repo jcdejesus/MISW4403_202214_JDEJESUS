@@ -3,24 +3,35 @@ import { TypeOrmTestingConfig } from '../../../shared/testing-utils';
 import { AerolineasService } from './aerolineas.service';
 import { faker } from '@faker-js/faker';
 import { AerolineaEntity } from '../infraestructura/aerolinea.entity';
+import { AeropuertoEntity } from '../../aeropuertos/infraestructura/aeropuerto.entity';
+import { AeropuertosService } from '../../aeropuertos/aplicacion/aeropuertos.service';
 
 describe('AerolineasService', () => {
   let service: AerolineasService;
+  let aeropuertosService: AeropuertosService;
   let aerolinea = new AerolineaEntity();
+  let aeropuerto = new AeropuertoEntity();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [...TypeOrmTestingConfig()],
-      providers: [AerolineasService],
+      providers: [AerolineasService, AeropuertosService],
     }).compile();
 
     service = module.get<AerolineasService>(AerolineasService);
+    aeropuertosService = module.get<AeropuertosService>(AeropuertosService);
 
     aerolinea.id = faker.string.uuid();
     aerolinea.nombre = faker.lorem.paragraph(10);
     aerolinea.descripcion = faker.lorem.paragraph(10);
     aerolinea.fechaFundacion = faker.date.past({ years: 10 });
     aerolinea.sitioWeb = 'www.google.com';
+    aeropuerto = new AeropuertoEntity();
+    aeropuerto.id = faker.string.uuid();
+    aeropuerto.nombre = faker.lorem.paragraph(10);
+    aeropuerto.codigo = faker.number.int(2).toString();
+    aeropuerto.ciudad = faker.location.city();
+    aeropuerto.pais = faker.location.country();
   });
 
   it('Servicio debe poder compilar', () => {
@@ -60,6 +71,18 @@ describe('AerolineasService', () => {
       await service.delete(aerolinea.id);
       const deletedAerolinea = await service.findOne(aerolinea.id);
       expect(deletedAerolinea).toBeNull();
+    });
+  });
+
+  describe('Aerolineas - Aeropuertos', () => {
+    it('debe asociar un aeropuerto a una aerolinea', async () => {
+      await service.create(aerolinea);
+      await aeropuertosService.create(aeropuerto);
+      const result = await service.addAirportToAirline(
+        aeropuerto,
+        aerolinea.id,
+      );
+      expect(result).not.toBeNull();
     });
   });
 });

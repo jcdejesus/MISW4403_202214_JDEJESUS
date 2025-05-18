@@ -1,11 +1,4 @@
-import { AerolineaEntity } from '../../aerolineas/infraestructura/aerolinea.entity';
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-  ManyToMany,
-  JoinTable,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 export class BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -22,8 +15,4 @@ export class AeropuertoEntity extends BaseEntity {
   ciudad: string;
   @Column()
   pais: string;
-
-  @ManyToMany(() => AerolineaEntity)
-  @JoinTable()
-  aerolineas: AerolineaEntity[];
 }

@@ -1,4 +1,6 @@
+import { AeropuertoEntity } from '../../aeropuertos/infraestructura/aeropuerto.entity';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ManyToMany, JoinTable } from 'typeorm';
 
 export class BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -15,4 +17,8 @@ export class AerolineaEntity extends BaseEntity {
   fechaFundacion: Date;
   @Column()
   sitioWeb: string;
+
+  @ManyToMany(() => AeropuertoEntity)
+  @JoinTable()
+  aeropuertos: AeropuertoEntity[];
 }
