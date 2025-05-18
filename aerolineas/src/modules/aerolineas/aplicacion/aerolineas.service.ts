@@ -44,7 +44,7 @@ export class AerolineasService {
     return this.aerolineasRepository.save(aerolinea);
   }
 
-  async delete(): Promise<AerolineaEntity | undefined> {
-    return;
+  async delete(aerolineaId: string) {
+    await this.aerolineasRepository.delete({ id: aerolineaId });
   }
 }

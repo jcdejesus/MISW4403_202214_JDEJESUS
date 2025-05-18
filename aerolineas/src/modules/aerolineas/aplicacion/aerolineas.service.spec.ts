@@ -57,6 +57,11 @@ describe('AerolineasService', () => {
       expect(result?.nombre).toBe(aerolineaToBeUpdated.nombre);
     });
 
-    it('debe poder eliminar una aerolinea', () => {});
+    it('debe poder eliminar una aerolinea', async () => {
+      await service.create(aerolinea);
+      await service.delete(aerolinea.id);
+      const deletedAerolinea = await service.findOne(aerolinea.id);
+      expect(deletedAerolinea).toBeNull();
+    });
   });
 });
