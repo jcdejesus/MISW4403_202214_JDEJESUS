@@ -59,8 +59,10 @@ describe('AeropuertosService', () => {
     it('debe poder eliminar una aeropuerto', async () => {
       await service.create(aeropuerto);
       await service.delete(aeropuerto.id);
-      const deletedAeropuerto = await service.findOne(aeropuerto.id);
-      expect(deletedAeropuerto).toBeNull();
+      expect(async () => await service.findOne(aeropuerto.id)).rejects.toEqual({
+        message: 'No existe el aeropuerto',
+        type: 0,
+      });
     });
   });
 });

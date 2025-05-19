@@ -19,9 +19,18 @@ export class AeropuertosService {
   }
 
   async findOne(aeropuertoId: string): Promise<AeropuertoEntity | null> {
-    return await this.aeropuertosRepository.findOne({
+    const aeropuerto = await this.aeropuertosRepository.findOne({
       where: [{ id: aeropuertoId }],
     });
+
+    if (!aeropuerto) {
+      throw new BusinessLogicException(
+        'No existe el aeropuerto',
+        BusinessError.NOT_FOUND,
+      );
+    }
+
+    return aeropuerto;
   }
 
   async create(
@@ -38,9 +47,16 @@ export class AeropuertosService {
   }
 
   async update(
-    aerolinea: AeropuertoEntity,
+    aeropuerto: AeropuertoEntity,
   ): Promise<AeropuertoEntity | undefined> {
-    return this.aeropuertosRepository.save(aerolinea);
+    const aeropuertoEnBD = await this.findOne(aeropuerto.id);
+    if (!aeropuertoEnBD) {
+      throw new BusinessLogicException(
+        'No existe el aeropuerto',
+        BusinessError.BAD_REQUEST,
+      );
+    }
+    return await this.aeropuertosRepository.save(aeropuerto);
   }
 
   async delete(aerolineaId: string) {

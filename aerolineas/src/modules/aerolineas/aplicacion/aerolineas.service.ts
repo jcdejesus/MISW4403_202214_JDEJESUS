@@ -20,22 +20,32 @@ export class AerolineasService {
   }
 
   async findOne(aerolineaId: string): Promise<AerolineaEntity | null> {
-    return await this.aerolineasRepository.findOne({
+    const aerolinea = await this.aerolineasRepository.findOne({
       where: [{ id: aerolineaId }],
       relations: {
         aeropuertos: true,
       },
     });
+
+    if (!aerolinea) {
+      throw new BusinessLogicException(
+        'No existe la aerolinea',
+        BusinessError.NOT_FOUND,
+      );
+    }
+
+    return aerolinea;
   }
 
   async create(
     aerolinea: AerolineaEntity,
   ): Promise<AerolineaEntity | undefined> {
     const currentDate = new Date();
-    if (currentDate < aerolinea.fechaFundacion) {
+    const fechaFundacionDate = new Date(aerolinea.fechaFundacion);
+    if (currentDate < fechaFundacionDate) {
       throw new BusinessLogicException(
         'Fecha de fundación de la aerolinea debe estar en el pasado',
-        BusinessError.NOT_FOUND,
+        BusinessError.BAD_REQUEST,
       );
     }
 
@@ -61,7 +71,10 @@ export class AerolineasService {
     });
 
     if (!aerolinea) {
-      return;
+      throw new BusinessLogicException(
+        'No existe la aerolinea',
+        BusinessError.NOT_FOUND,
+      );
     }
 
     if (aerolinea?.aeropuertos) {

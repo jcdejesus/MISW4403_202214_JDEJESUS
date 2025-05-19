@@ -69,8 +69,9 @@ describe('AerolineasService', () => {
     it('debe poder eliminar una aerolinea', async () => {
       await service.create(aerolinea);
       await service.delete(aerolinea.id);
-      const deletedAerolinea = await service.findOne(aerolinea.id);
-      expect(deletedAerolinea).toBeNull();
+      expect(async () => {
+        await service.findOne(aerolinea.id);
+      }).rejects.toEqual({ message: 'No existe la aerolinea', type: 0 });
     });
   });
 
