@@ -103,5 +103,31 @@ describe('AerolineasService', () => {
       );
       expect(aeropuertoFromDatabase).toEqual(aeropuerto);
     });
+
+    it('debe eliminar un aeropuerto de una aerolinea', async () => {
+      await service.create(aerolinea);
+      await aeropuertosService.create(aeropuerto);
+      await service.deleteAirportFromAirline(aeropuerto.id, aerolinea.id);
+      const aeropuertoFromDatabase = await service.findAirportFromAirline(
+        aerolinea.id,
+        aeropuerto.id,
+      );
+      expect(aeropuertoFromDatabase).toBeNull();
+    });
+
+    it('debe actualizar un aeropuerto de una aerolinea', async () => {
+      await service.create(aerolinea);
+      await aeropuertosService.create(aeropuerto);
+      await service.addAirportToAirline(aeropuerto, aerolinea.id);
+      const updatedAirport = {
+        ...aeropuerto,
+        nombre: 'Actualizado',
+      };
+      const result = await service.updateAirportsFromAirline(
+        [updatedAirport],
+        aerolinea.id,
+      );
+      expect(result).not.toBeNull();
+    });
   });
 });

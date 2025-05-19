@@ -75,7 +75,6 @@ export class AerolineasService {
     aerolineaId: string,
   ): Promise<AeropuertoEntity[]> {
     const aerolinea = await this.findOne(aerolineaId);
-    console.log('PPPPPPP', aerolinea);
     return aerolinea?.aeropuertos ?? [];
   }
 
@@ -92,7 +91,7 @@ export class AerolineasService {
   }
 
   async updateAirportsFromAirline(
-    aeropuerto: AeropuertoEntity,
+    aeropuertos: AeropuertoEntity[],
     aerolineaId: string,
   ) {
     const aerolinea = await this.aerolineasRepository.findOne({
@@ -103,18 +102,9 @@ export class AerolineasService {
       return;
     }
 
-    if (aerolinea?.aeropuertos.length > 0) {
-      aerolinea.aeropuertos = aerolinea?.aeropuertos.map((item) => {
-        return {
-          ...item,
-          ...aeropuerto,
-        };
-      });
+    aerolinea.aeropuertos = [...aeropuertos];
 
-      await this.aerolineasRepository.save(aerolinea);
-    }
-
-    return null;
+    return await this.aerolineasRepository.save(aerolinea);
   }
 
   async deleteAirportFromAirline(aeropuertoId: string, aerolineaId: string) {
@@ -126,7 +116,7 @@ export class AerolineasService {
       return;
     }
 
-    if (aerolinea?.aeropuertos.length > 0) {
+    if (aerolinea?.aeropuertos?.length > 0) {
       aerolinea.aeropuertos = aerolinea?.aeropuertos.filter(
         (item) => item.id !== aeropuertoId,
       );
