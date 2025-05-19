@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseUUIDPipe,
@@ -44,7 +45,7 @@ export class AerolineasController {
     return await this.aerolineasService.update(aerolinea);
   }
 
-  @Put(':id')
+  @Delete(':id')
   async delete(
     @Param('id', new ParseUUIDPipe()) aerolineaId: string,
   ): Promise<void> {

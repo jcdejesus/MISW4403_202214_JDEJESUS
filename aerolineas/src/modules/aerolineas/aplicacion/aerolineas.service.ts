@@ -55,6 +55,9 @@ export class AerolineasService {
   async addAirportToAirline(aeropuerto: AeropuertoEntity, aerolineaId: string) {
     const aerolinea = await this.aerolineasRepository.findOne({
       where: [{ id: aerolineaId }],
+      relations: {
+        aeropuertos: true,
+      },
     });
 
     if (!aerolinea) {

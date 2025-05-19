@@ -9,6 +9,7 @@ import { AerolineasService } from './modules/aerolineas/aplicacion/aerolineas.se
 import { AeropuertoEntity } from './modules/aeropuertos/infraestructura/aeropuerto.entity';
 import { AerolineasController } from './modules/aerolineas/api/aerolineas.controller';
 import { AeropuertosController } from './modules/aeropuertos/api/aerolineas.controller';
+import { AerolineasAeropuertosController } from './modules/aerolineas/api/aerolineas-aeropuertos.controller';
 
 @Module({
   imports: [
@@ -26,7 +27,12 @@ import { AeropuertosController } from './modules/aeropuertos/api/aerolineas.cont
       synchronize: true,
     }),
   ],
-  controllers: [AppController, AerolineasController, AeropuertosController],
+  controllers: [
+    AppController,
+    AerolineasController,
+    AeropuertosController,
+    AerolineasAeropuertosController,
+  ],
   providers: [AppService, AerolineasService],
 })
 export class AppModule {}
