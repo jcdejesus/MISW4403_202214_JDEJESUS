@@ -59,6 +59,14 @@ export class AerolineasService {
   }
 
   async delete(aerolineaId: string) {
+    const aerolinea = await this.findOne(aerolineaId);
+    if (!aerolinea) {
+      throw new BusinessLogicException(
+        'No existe la aerolinea',
+        BusinessError.BAD_REQUEST,
+      );
+    }
+
     await this.aerolineasRepository.delete({ id: aerolineaId });
   }
 

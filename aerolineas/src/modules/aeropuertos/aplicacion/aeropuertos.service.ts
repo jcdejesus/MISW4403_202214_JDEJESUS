@@ -59,7 +59,14 @@ export class AeropuertosService {
     return await this.aeropuertosRepository.save(aeropuerto);
   }
 
-  async delete(aerolineaId: string) {
-    await this.aeropuertosRepository.delete({ id: aerolineaId });
+  async delete(aeropuertoId: string) {
+    const aeropuertoEnBD = await this.findOne(aeropuertoId);
+    if (!aeropuertoEnBD) {
+      throw new BusinessLogicException(
+        'No existe el aeropuerto',
+        BusinessError.BAD_REQUEST,
+      );
+    }
+    await this.aeropuertosRepository.delete({ id: aeropuertoId });
   }
 }

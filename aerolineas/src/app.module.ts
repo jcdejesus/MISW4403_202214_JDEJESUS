@@ -8,7 +8,7 @@ import { AeropuertosModule } from './modules/aeropuertos/aeropuertos.module';
 import { AerolineasService } from './modules/aerolineas/aplicacion/aerolineas.service';
 import { AeropuertoEntity } from './modules/aeropuertos/infraestructura/aeropuerto.entity';
 import { AerolineasController } from './modules/aerolineas/api/aerolineas.controller';
-import { AeropuertosController } from './modules/aeropuertos/api/aerolineas.controller';
+import { AeropuertosController } from './modules/aeropuertos/api/aeropuertos.controller';
 import { AerolineasAeropuertosController } from './modules/aerolineas/api/aerolineas-aeropuertos.controller';
 
 @Module({

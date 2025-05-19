@@ -121,7 +121,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"nombre\": \"Simon Bolivar\",\n    \"ciudad\": \"Caracas\",\n    \"codigo\": \"1111\",\n    \"pais\": \"venezuela\"\n}",
+					"raw": "{\n    \"nombre\": \"Simon Bolivar\",\n    \"ciudad\": \"Caracas\",\n    \"codigo\": \"1111\",\n    \"pais\": \"venezuela\",\n    \"id\": \"{{aeropuerto_id}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -136,6 +136,42 @@
 					"path": [
 						"airports",
 						"{{aeropuerto_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar un aeropuerto por su ID.",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/airports/{{aeropuerto_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"airports",
+						"{{aeropuerto_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar un aeropuerto con un ID que no existe.",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/airports/{{no_aeropuerto_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"airports",
+						"{{no_aeropuerto_id}}"
 					]
 				}
 			},

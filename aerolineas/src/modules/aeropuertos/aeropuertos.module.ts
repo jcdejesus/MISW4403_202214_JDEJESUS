@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AeropuertosController } from './api/aerolineas.controller';
+import { AeropuertosController } from './api/aeropuertos.controller';
 import { AeropuertosService } from './aplicacion/aeropuertos.service';
 import { AeropuertoEntity } from './infraestructura/aeropuerto.entity';
 
