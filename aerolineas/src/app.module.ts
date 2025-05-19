@@ -5,6 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AerolineaEntity } from './modules/aerolineas/infraestructura/aerolinea.entity';
 import { AerolineasModule } from './modules/aerolineas/aerolineas.module';
 import { AeropuertosModule } from './modules/aeropuertos/aeropuertos.module';
+import { AerolineasService } from './modules/aerolineas/aplicacion/aerolineas.service';
+import { AeropuertoEntity } from './modules/aeropuertos/infraestructura/aeropuerto.entity';
+import { AerolineasController } from './modules/aerolineas/api/aerolineas.controller';
+import { AeropuertosController } from './modules/aeropuertos/api/aerolineas.controller';
 
 @Module({
   imports: [
@@ -17,12 +21,12 @@ import { AeropuertosModule } from './modules/aeropuertos/aeropuertos.module';
       username: 'postgres',
       password: 'postgres',
       database: 'aerolineas-db',
-      entities: [AerolineaEntity, AerolineaEntity],
+      entities: [AerolineaEntity, AeropuertoEntity],
       dropSchema: true,
       synchronize: true,
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, AerolineasController, AeropuertosController],
+  providers: [AppService, AerolineasService],
 })
 export class AppModule {}
